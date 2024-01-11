@@ -23,7 +23,7 @@ function Home({ userInfo }) {
   // Fetch QCMs on component mount
   useEffect(() => {
     getqcms();
-    getUsersResponses()
+    getUsersResponses();
   }, []);
 
   // Fetch QCMs from backend
@@ -33,10 +33,10 @@ function Home({ userInfo }) {
     setQcms(qcms);
   }
   async function getUsersResponses() {
-    const res = await fetch("http://localhost:8080/api/getresponses")
-    const responses = await res.json()
-    console.log(responses)
-    setUserResponses(responses)
+    const res = await fetch("http://localhost:8080/api/getresponses");
+    const responses = await res.json();
+    console.log(responses);
+    setUserResponses(responses);
   }
 
   // Handle adding a new question
@@ -143,206 +143,208 @@ function Home({ userInfo }) {
 
   // Handle QCM deletion
   const deleteQcm = async (qcmid) => {
-    const response = await fetch("http://localhost:8080/api/deleteqcm", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ qcmid: qcmid }),
-    });
+    const response = await fetch(
+      `http://localhost:8080/api/deleteqcm/${qcmid}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-    // Fetch updated QCMs after deletion
-    getqcms();
+    if (response.ok) {
+      console.log("QCM deleted successfully");
+      // Fetch updated QCMs after deletion
+      getqcms();
+    } else {
+      console.error("Failed to delete QCM.");
+      // Handle error, maybe show a message to the user
+    }
   };
 
   return (
     <>
       <div className={styles.main}>
-        {
-          (phase == "addquiz") ? (
-            <form onSubmit={handleAddQuiz} >
+        {phase == "addquiz" ? (
+          <form onSubmit={handleAddQuiz}>
+            <div className={styles.inputfield}>
+              <label>Title:</label>
+              <input
+                type="text"
+                placeholder="title of QCM"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </div>
+            <div className={styles.inputfield}>
+              <label>Date and Time to Start:</label>
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
+              <input
+                type="time"
+                value={startTime}
+                onChange={(e) => setStartTime(e.target.value)}
+              />
+            </div>
+            <div className={styles.inputfield}>
+              <label>Due Date and Time:</label>
+              <input
+                type="date"
+                value={dueDate}
+                onChange={(e) => setDueDate(e.target.value)}
+              />
+              <input
+                type="time"
+                value={dueTime}
+                onChange={(e) => setDueTime(e.target.value)}
+              />
+            </div>
+            <div className={styles.inputfield}>
+              <label htmlFor="classSelect">Class:</label>
+              <select
+                value={classValue}
+                onChange={(e) => setClassValue(e.target.value)}
+              >
+                <option value="isil">ISIL</option>
+                <option value="erdd">ERDD</option>
+                <option value="mbf">MBF</option>
+                <option value="mge">MGE</option>
+              </select>
+            </div>
+            <div className={styles.inputfield}>
+              <label>Subject:</label>
+              <select
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+              >
+                <option value="java">Java</option>
+                <option value="uml">UML</option>
+                <option value="web">Web</option>
+                <option value="database">Data Base</option>
+              </select>
+            </div>
+            <div className={styles.addqustions}>
+              <input
+                type="text"
+                placeholder="Question"
+                required
+                value={questionsContent}
+                onChange={(e) => setQuestionsContent(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="A"
+                required
+                value={answerA}
+                onChange={(e) => setAnswerA(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="B"
+                required
+                value={answerB}
+                onChange={(e) => setAnswerB(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="C"
+                required
+                value={answerC}
+                onChange={(e) => setAnswerC(e.target.value)}
+              />
+
               <div className={styles.inputfield}>
-                <label>Title:</label>
-                <input
-                  type="text"
-                  placeholder="title of QCM"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-              </div>
-              <div className={styles.inputfield}>
-                <label>Date and Time to Start:</label>
-                <input
-                  type="date"
-                  value={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
-                />
-                <input
-                  type="time"
-                  value={startTime}
-                  onChange={(e) => setStartTime(e.target.value)}
-                />
-              </div>
-              <div className={styles.inputfield}>
-                <label>Due Date and Time:</label>
-                <input
-                  type="date"
-                  value={dueDate}
-                  onChange={(e) => setDueDate(e.target.value)}
-                />
-                <input
-                  type="time"
-                  value={dueTime}
-                  onChange={(e) => setDueTime(e.target.value)}
-                />
-              </div>
-              <div className={styles.inputfield}>
-                <label htmlFor="classSelect">Class:</label>
+                <label>Correct Answer:</label>
                 <select
-                  value={classValue}
-                  onChange={(e) => setClassValue(e.target.value)}
+                  value={correctAnswer}
+                  onChange={(e) => setCorrectAnswer(e.target.value)}
+                  required
                 >
-                  <option value="isil">ISIL</option>
-                  <option value="erdd">ERDD</option>
-                  <option value="mbf">MBF</option>
-                  <option value="mge">MGE</option>
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                  <option value="C">C</option>
                 </select>
               </div>
-              <div className={styles.inputfield}>
-                <label>Subject:</label>
-                <select
-                  value={subject}
-                  onChange={(e) => setSubject(e.target.value)}
+              <div className={styles.actions}>
+                <button onClick={handleNewQuestion}>New Question</button>
+              </div>
+            </div>
+            <button type="submit">Create</button>
+          </form>
+        ) : phase == "main" ? (
+          <>
+            <div className={styles.buttons}>
+              <div className={styles.addquiz}>
+                <button
+                  className={styles.addquizbutton}
+                  onClick={() => setPhase("addquiz")}
                 >
-                  <option value="java">Java</option>
-                  <option value="uml">UML</option>
-                  <option value="web">Web</option>
-                  <option value="database">Data Base</option>
-                </select>
+                  Add Quiz
+                </button>
               </div>
-              <div className={styles.addqustions}>
-                <input
-                  type="text"
-                  placeholder="Question"
-                  required
-                  value={questionsContent}
-                  onChange={(e) => setQuestionsContent(e.target.value)}
-                />
-                <input
-                  type="text"
-                  placeholder="A"
-                  required
-                  value={answerA}
-                  onChange={(e) => setAnswerA(e.target.value)}
-                />
-                <input
-                  type="text"
-                  placeholder="B"
-                  required
-                  value={answerB}
-                  onChange={(e) => setAnswerB(e.target.value)}
-                />
-                <input
-                  type="text"
-                  placeholder="C"
-                  required
-                  value={answerC}
-                  onChange={(e) => setAnswerC(e.target.value)}
-                />
-
-                <div className={styles.inputfield}>
-                  <label>Correct Answer:</label>
-                  <select
-                    value={correctAnswer}
-                    onChange={(e) => setCorrectAnswer(e.target.value)}
-                    required
-                  >
-                    <option value="A">A</option>
-                    <option value="B">B</option>
-                    <option value="C">C</option>
-                  </select>
-                </div>
-                <div className={styles.actions}>
-                  <button onClick={handleNewQuestion}>New Question</button>
-                </div>
-              </div>
-              <button type="submit">Create</button>
-            </form>
-          ) : (phase == "main") ? (
-            <>
-              <div className={styles.buttons}>
-                <div className={styles.addquiz}>
-                  <button
-                    className={styles.addquizbutton}
-                    onClick={() => setPhase("addquiz")}
-                  >
-                    Add Quiz
-                  </button>
-                </div>
-                <div>
-                  <button onClick={() => setPhase("results")}>
-                    Student's Results
-                  </button>
-                </div>
-              </div>
-
-
-              <div className={styles.qcms}>
-                {qcms.map((qcm, index) => (
-                  <div className={styles.qcm} key={index}>
-                    <div className={styles.smalldata}>
-                      Title : <div className={styles.title}>{qcm.title}</div>
-                    </div>
-                    <div className={styles.smalldata}>
-                      Class : <div className={styles.class}>{qcm.classe}</div>
-                    </div>
-                    <div className={styles.smalldata}>
-                      Subject :{" "}
-                      <div className={styles.subject}>{qcm.subject}</div>
-                    </div>
-                    <div className={styles.smalldata}>
-                      Start Date :{" "}
-                      <div className={styles.startdate}>
-                        {qcm.startDate} {qcm.startTime}
-                      </div>
-                    </div>
-                    <div className={styles.smalldata}>
-                      Due Date :{" "}
-                      <div className={styles.duedate}>
-                        {qcm.dueDate} {qcm.dueTime}
-                      </div>
-                    </div>
-                    <div className={styles.smalldata}>
-                      Published By :{" "}
-                      <div className={styles.prof}>{qcm.publishedBy}</div>
-                    </div>
-                    {qcm.publishedBy == userInfo.fullname && (
-                      <div className={styles.actions}>
-                        <button onClick={() => deleteQcm(qcm._id)}>Delete</button>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </>
-          ) : (
-            <div className={styles.resultscontainer}>
-              <button onClick={() => setPhase("main")}> Go Back</button>
-              <div className={styles.students}>
-                {
-                  userResponses.map((s, key) => (
-                    <div key={key} className={styles.student}>
-                      <div className={styles.score}>score : {s.score}</div>
-                      <div className={styles.user}>Name : {s.fullname}</div>
-                      <div className={styles.user}>Quiz title : {s.quizTitle}</div>
-                    </div>
-                  ))
-                }
+              <div>
+                <button onClick={() => setPhase("results")}>
+                  Student's Results
+                </button>
               </div>
             </div>
 
-          )
-        }
+            <div className={styles.qcms}>
+              {qcms.map((qcm, index) => (
+                <div className={styles.qcm} key={index}>
+                  <div className={styles.smalldata}>
+                    Title : <div className={styles.title}>{qcm.title}</div>
+                  </div>
+                  <div className={styles.smalldata}>
+                    Class : <div className={styles.class}>{qcm.classe}</div>
+                  </div>
+                  <div className={styles.smalldata}>
+                    Subject :{" "}
+                    <div className={styles.subject}>{qcm.subject}</div>
+                  </div>
+                  <div className={styles.smalldata}>
+                    Start Date :{" "}
+                    <div className={styles.startdate}>
+                      {qcm.startDate} {qcm.startTime}
+                    </div>
+                  </div>
+                  <div className={styles.smalldata}>
+                    Due Date :{" "}
+                    <div className={styles.duedate}>
+                      {qcm.dueDate} {qcm.dueTime}
+                    </div>
+                  </div>
+                  <div className={styles.smalldata}>
+                    Published By :{" "}
+                    <div className={styles.prof}>{qcm.publishedBy}</div>
+                  </div>
+                  {qcm.publishedBy == userInfo.fullname && (
+                    <div className={styles.actions}>
+                      <button onClick={() => deleteQcm(qcm.id)}>Delete</button>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </>
+        ) : (
+          <div className={styles.resultscontainer}>
+            <button onClick={() => setPhase("main")}> Go Back</button>
+            <div className={styles.students}>
+              {userResponses.map((s, key) => (
+                <div key={key} className={styles.student}>
+                  <div className={styles.score}>score : {s.score}</div>
+                  <div className={styles.user}>Name : {s.fullname}</div>
+                  <div className={styles.user}>Quiz title : {s.quizTitle}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
