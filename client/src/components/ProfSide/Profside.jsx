@@ -334,7 +334,7 @@ function Home({ userInfo }) {
                     <div key={key} className={styles.student}>
                       <div className={styles.score}>score : {s.score}</div>
                       <div className={styles.user}>Name : {s.fullname}</div>
-                      <div className={styles.user}>Quiz title : {s.quiztitle}</div>
+                      <div className={styles.user}>Quiz title : {s.quizTitle}</div>
                     </div>
                   ))
                 }

@@ -76,7 +76,8 @@ const QuizComponent = ({ userInfo }) => {
                   </p>{" "}
                 </div>
                 <div className={styles.cardFooter}>
-                  {isQuizDone(quiz._id) ? (
+
+                  {isQuizDone(quiz.id) ? (
                     <h1>Already Passed</h1>
                   ) : (
                     <button

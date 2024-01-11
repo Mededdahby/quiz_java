@@ -47,7 +47,7 @@ const QuizPage = ({ quizData, userInfo }) => {
         score,
         answers,
         fullname: userInfo.fullname,
-        quiztitle: quizData.title,
+        quizTitle: quizData.title,
       };
   
       console.log(data);
