@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import AboutQuiz from "./AboutQuiz";
 import styles from "./quizComponnet.module.css"; // Import the CSS module
@@ -18,7 +17,7 @@ const QuizComponent = ({ userInfo }) => {
 
   async function getQuizInfo() {
     const res = await fetch(
-      `http://localhost:8080/responseById/${userInfo.userId}`
+      `http://localhost:8080/api/responseById/${userInfo.userId}`
     );
     const qcmIds = await res.json();
     setQcmIds(qcmIds);
@@ -27,6 +26,8 @@ const QuizComponent = ({ userInfo }) => {
   async function getMyData() {
     try {
       let response = await fetch("http://localhost:8080/api/quizzes", {
+        method: "GET",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -47,7 +48,6 @@ const QuizComponent = ({ userInfo }) => {
   }
 
   function isQuizDone(quizId) {
-
     const qcmid = qcmIds.filter((e) => e.quizId == quizId);
     return qcmid.length > 0;
   }

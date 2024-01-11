@@ -50,7 +50,7 @@ const QuizPage = ({ quizData, userInfo }) => {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/studentAnswers", {
+      const response = await fetch("http://localhost:8080/api/studentAnswers", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
