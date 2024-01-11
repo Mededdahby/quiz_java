@@ -27,7 +27,7 @@ const AboutQuiz = ({ quiz, userInfo }) => {
           {" "}
           <div className={styles.cardBody}>
             <h2 className={styles.cardTitle}>{quiz.title}</h2>
-            <p className={styles.cardText}>Class: {quiz.class}</p>
+            <p className={styles.cardText}>Class: {quiz.classe}</p>
             <p className={styles.cardText}>Subject: {quiz.subject}</p>
             <p className={styles.cardText}>Start Date: {quiz.startDate}</p>
             <p className={styles.cardText}>Start Time: {quiz.startTime}</p>

@@ -69,7 +69,7 @@ const QuizComponent = ({ userInfo }) => {
                 <div className={styles.cardBody}>
                   {" "}
                   <h5 className={styles.cardTitle}>{quiz.title}</h5>
-                  <p className={styles.cardText}>Class: {quiz.class}</p>
+                  <p className={styles.cardText}>Class: {quiz.classe}</p>
                   <p className={styles.cardText}>Subject: {quiz.subject}</p>
                   <p className={`${styles.cardText} ${styles.date}`}>
                     Started at: {quiz.startDate}

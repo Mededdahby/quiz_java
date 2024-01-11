@@ -28,12 +28,12 @@ function Home({ userInfo }) {
 
   // Fetch QCMs from backend
   async function getqcms() {
-    const res = await fetch("http://localhost:5000/data");
+    const res = await fetch("http://localhost:8080/api/quizzes");
     const qcms = await res.json();
     setQcms(qcms);
   }
   async function getUsersResponses() {
-    const res = await fetch("http://localhost:5000/getresponses")
+    const res = await fetch("http://localhost:8080/api/getresponses")
     const responses = await res.json()
     console.log(responses)
     setUserResponses(responses)
@@ -68,7 +68,7 @@ function Home({ userInfo }) {
   // Add QCM to the backend
   async function addQcmBackend(qcm) {
     try {
-      const response = await fetch("http://localhost:5000/addqcm", {
+      const response = await fetch("http://localhost:8080/api/addqcm", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -113,7 +113,7 @@ function Home({ userInfo }) {
       id: maxId + 1,
       title,
       questions: newQuestions,
-      class: classValue,
+      classe: classValue,
       subject,
       startDate,
       startTime,
@@ -143,7 +143,7 @@ function Home({ userInfo }) {
 
   // Handle QCM deletion
   const deleteQcm = async (qcmid) => {
-    const response = await fetch("http://localhost:5000/deleteqcm", {
+    const response = await fetch("http://localhost:8080/api/deleteqcm", {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -294,7 +294,7 @@ function Home({ userInfo }) {
                       Title : <div className={styles.title}>{qcm.title}</div>
                     </div>
                     <div className={styles.smalldata}>
-                      Class : <div className={styles.class}>{qcm.class}</div>
+                      Class : <div className={styles.class}>{qcm.classe}</div>
                     </div>
                     <div className={styles.smalldata}>
                       Subject :{" "}

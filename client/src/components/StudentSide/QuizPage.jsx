@@ -10,9 +10,6 @@ const QuizPage = ({ quizData, userInfo }) => {
   const [timeDisplay, setTimeDisplay] = useState(true);
   const [closeButton, setCloseButton] = useState(true);
 
-
-
-
   useEffect(() => {}, []);
 
   const handleAnswerChange = (selectedOption) => {
@@ -40,9 +37,10 @@ const QuizPage = ({ quizData, userInfo }) => {
   };
 
   const handleSaveAnswers = async () => {
+    console.log(quizData._id)
     const data = {
       userId: userInfo.userId,
-      quizId: quizData._id,
+      quizId: quizData.id,
       score: await calculateScore(),
       answers,
       fullname: userInfo.fullname,
@@ -50,6 +48,7 @@ const QuizPage = ({ quizData, userInfo }) => {
     };
 
     try {
+      console.log(data);
       const response = await fetch("http://localhost:8080/api/studentAnswers", {
         method: "POST",
         headers: {
@@ -83,7 +82,6 @@ const QuizPage = ({ quizData, userInfo }) => {
 
   return (
     <div className={styles.containerFluid}>
-      
       <div className={styles.timeDisplay}>
         {timeDisplay && (
           <Countdown
