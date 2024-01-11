@@ -37,18 +37,21 @@ const QuizPage = ({ quizData, userInfo }) => {
   };
 
   const handleSaveAnswers = async () => {
-    console.log(quizData._id)
-    const data = {
-      userId: userInfo.userId,
-      quizId: quizData.id,
-      score: await calculateScore(),
-      answers,
-      fullname: userInfo.fullname,
-      quiztitle: quizData.title,
-    };
-
     try {
+      console.log(quizData._id);
+  
+      const score = await calculateScore();
+      const data = {
+        userId: userInfo.userId,
+        quizId: quizData.id,
+        score,
+        answers,
+        fullname: userInfo.fullname,
+        quiztitle: quizData.title,
+      };
+  
       console.log(data);
+  
       const response = await fetch("http://localhost:8080/api/studentAnswers", {
         method: "POST",
         headers: {
@@ -56,7 +59,7 @@ const QuizPage = ({ quizData, userInfo }) => {
         },
         body: JSON.stringify(data),
       });
-
+  
       if (response.ok) {
         console.log("Data sent successfully");
       } else {
@@ -66,6 +69,7 @@ const QuizPage = ({ quizData, userInfo }) => {
       console.error("Error:", error);
     }
   };
+  
 
   const handleSubmit = async () => {
     handleSaveAnswers();
